@@ -595,23 +595,22 @@ public class ImagePickerModule extends ReactContextBaseJavaModule
         return false;
       }
       else
-      {
+      {       
         String[] PERMISSIONS = {Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA};
         if (activity instanceof ReactActivity)
         {
           ((ReactActivity) activity).requestPermissions(PERMISSIONS, requestCode, listener);
         }
-        else if (activity instanceof OnImagePickerPermissionsCallback)
+        else if (activity instanceof PermissionAwareActivity)
         {
-          ((OnImagePickerPermissionsCallback) activity).setPermissionListener(listener);
-          ActivityCompat.requestPermissions(activity, PERMISSIONS, requestCode);
+          ((PermissionAwareActivity) activity).requestPermissions(PERMISSIONS, requestCode, listener);
         }
         else
         {
           final String errorDescription = new StringBuilder(activity.getClass().getSimpleName())
-                  .append(" must implement ")
-                  .append(OnImagePickerPermissionsCallback.class.getSimpleName())
-                  .toString();
+            .append(" must implement ")
+            .append(PermissionAwareActivity.class.getSimpleName())
+            .toString();
           throw new UnsupportedOperationException(errorDescription);
         }
         return false;
